@@ -2,6 +2,20 @@
 
 ## Filling ElasticSearch with Wikipedia
 
+### Create wikidump
+
+First, we need to download a [Wikipedia database dump](http://download.wikimedia.org/) for Bulgarian. (e.g. https://ftp.acc.umu.se/mirror/wikimedia.org/dumps/bgwiki/20190501/bgwiki-20190501-pages-meta-current.xml.bz2)
+
+Next step is to convert the xml into well-structured JSON with [WikiExtractor](https://github.com/attardi/wikiextractor).
+
+```bash
+python WikiExtractor.py ---output bgwiki.json --json /path/to/bgwiki-*-current.xml 
+```
+
+This should produce a folder with the following format: `AA`, `AB`,..., `ZZ`
+
+### Fill the index
+
 Download ES (Tested with 7.0.1) from the [official web site](https://www.elastic.co/downloads/elasticsearch).
 
 Start an instance:
