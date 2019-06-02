@@ -100,3 +100,22 @@ Fill the inverted index:
 ```bash 
 python fill_elastic.py --wiki_path /PATH/TO/WIKI_EXTRACTOR_DIRS --es_config_file ./configs/bgwiki.json 
 ```
+
+## Evaluation
+
+To evaluate the models we have built an evaluation script, allowing easy performance measrument of the predicted results.
+To run the evaluation, use:
+
+```python
+python evaluate.py data/bg_rc-v1.0.json experiments/preds.json
+```
+
+The prediction file should be in the following format:
+
+```
+{
+  "id": "predicted_answer",
+  ...
+  "id": "predicted_answer"
+}
+ ```
