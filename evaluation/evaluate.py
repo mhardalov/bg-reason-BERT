@@ -49,6 +49,9 @@ def get_raw_evaluation(qa_ds, preds):
     accuracy_scores = {}
 
     for (qid, pred) in preds.items():
+        if qid not in qa_ds:
+            continue
+
         question = qa_ds[qid]
         category = question['category']
 
@@ -85,7 +88,7 @@ def main():
 
     if OPTS.out_file:
         with open(OPTS.out_file, 'w') as f:
-            json.dump(out_eval, f)
+            json.dump(out_eval, f, indent=2)
     else:
         print(json.dumps(out_eval, indent=2))
 

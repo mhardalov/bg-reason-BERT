@@ -1,16 +1,12 @@
-import numpy as np
-import torch
+from collections import Counter
+
 import argparse
-
-from pytorch_pretrained_bert import BertTokenizer, BertModel, BertForQuestionAnswering
-from tqdm import tqdm
-
 from elasticsearch import Elasticsearch
+from pytorch_pretrained_bert import BertTokenizer, BertForQuestionAnswering
 
 from dataset.bgquiz import BGQuiz
 from qa.utils import qa
 from search.commons import ElasticConfig
-from collections import Counter
 
 query_field = [
     'title.bulgarian', 'passage.ngram',
@@ -34,14 +30,14 @@ def main():
                         required=True,
                         help="Path to the pre-trained PyTorch model.")
 
-    parser.add_argument('--quizes', nargs='+', help='List of Quiz json files', required=True)
+    parser.add_argument('--quiz_path', help='List of Quiz json files', required=True)
 
     # Optional parameters
     parser.add_argument('--use_gpu', default=False, action='store_true',
                         help='Whether to use GPU or not')
     args = parser.parse_args()
 
-    quiz = BGQuiz(args.quizes).json_data
+    quiz = BGQuiz(args.quiz_path)
 
     bert_path = args.pytorch_bert_path
     # BertForQA model with GPU support
@@ -57,62 +53,56 @@ def main():
 
     cnt = 0
     t = 0
-    for i, row in enumerate(quiz):
-        try:
-            question = row['question'].replace(":", '?')
-            #         wiki = row['info']
-            correct = row['correct']
-            answers = row['answers']
+    for i, row in enumerate(quiz.iterator()):
+        question = row.question
+        #         wiki = row['info']
+        correct = row.correct
+        answers = row.answers
 
-            print("{}/{}".format(i, len(quiz)), question, row['correct'])
-            print(answers)
+        print("{}/{}".format(i, quiz.size()), question, row.correct)
+        print(answers)
 
-            pred = qa(es, 'bgwiki_paragraph', model, tokenizer, question, num_hits=10, query_field=query_field,
-                      use_gpu=args.use_gpu)
-            c = Counter()
-            for r in pred:
-                c[r[0]] += 1
-                print(r)
+        pred = qa(es, 'bgwiki_paragraph', model, tokenizer, question, num_hits=64, query_field=query_field,
+                  use_gpu=args.use_gpu)
+        c = Counter()
+        for r in pred:
+            c[r[0]] += 1
+            print(r)
 
-            #         answer = c.most_common()[0][0] if len(c) > 0 else ''
-            answer = ''
+        #         answer = c.most_common()[0][0] if len(c) > 0 else ''
+        answer = ''
 
-            for (ans, _) in c.most_common():
-                for cans in answers:
-                    if (cans == ans or cans.lower() in ans.lower() or
-                            ans.lower() in cans.lower()):
-                        answer = cans
-                        break
-
-                if len(answer):
+        for (ans, _) in c.most_common():
+            for cans in answers:
+                if (cans == ans or cans.lower() in ans.lower() or
+                        ans.lower() in cans.lower()):
+                    answer = cans
                     break
 
-            if len(answer) == 0:
-                answer = '[CLS]'
+            if len(answer):
+                break
 
-            #         if correct.lower() not in wiki.lower():
-            # #             print(wiki)
-            #             print(question)
-            #             print(correct)
-            # #             print()
-            #         else: continue
+        if len(answer) == 0:
+            answer = '[CLS]'
 
-            #         answer = predict(model, tokenizer, question, wiki)[0]
+        #         if correct.lower() not in wiki.lower():
+        # #             print(wiki)
+        #             print(question)
+        #             print(correct)
+        # #             print()
+        #         else: continue
 
-            corr = (answer != '' and (correct == answer or correct.lower() in answer.lower() or
-                                      answer.lower() in correct.lower()))
+        #         answer = predict(model, tokenizer, question, wiki)[0]
 
-            print(answer, corr)
-            print()
-            t += 1
-            if corr:
-                cnt += 1
-            #             continue
-        except KeyboardInterrupt:
-            raise
-        except Exception as e:
-            print(e)
-            print()
+        corr = (answer != '' and (correct == answer or correct.lower() in answer.lower() or
+                                  answer.lower() in correct.lower()))
+
+        print(answer, corr)
+        print()
+        t += 1
+        if corr:
+            cnt += 1
+        #             continue
 
     print(cnt, t)
 

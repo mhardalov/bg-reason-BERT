@@ -65,42 +65,6 @@ def fill_index(es, es_conf, root):
         print("Pushed {} rows".format(len(actions)))
 
 
-def query_es(es, query, name, num_hits=1, query_field='passage',
-             explain=False):
-    res = es.search(
-        index=name,
-        body={
-            "explain": explain,
-            "query": {
-                "multi_match": {
-                    "query": query,
-                    "fields": query_field,
-                }
-            },
-            "highlight": {
-                "fragment_size": 400,
-                "type": "plain",
-                "number_of_fragments": 3,
-                "fields": {
-                    "passage": {}
-                }
-            },
-            "from": 0,
-            "size": num_hits
-        })
-    #     return res
-    #     scores = [hit['_score'] for hit in res['hits']['hits']]
-
-    return [{
-        "score":
-            x['_score'],
-        "source":
-            x['_source'],
-        "highlight":
-            x['highlight']['passage'] if hasattr(x, 'highlight') else ''
-    } for x in res['hits']['hits']]
-
-
 def main():
     parser = argparse.ArgumentParser()
 
