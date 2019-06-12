@@ -36,12 +36,20 @@ def fill_index(es, es_conf, root):
                     article = json.loads(line)
                     line = f.readline()
 
-                    paragraphs = [article['text']]
                     if es_conf.use_paragraphs:
-                        paragraphs = [
-                            article['text'][i:(i + es_conf.window)]
-                            for i in range(0, len(article), es_conf.stride)
-                        ]
+                        if es_conf.window > 0:
+                            paragraphs = [
+                                article['text'][i:(i + es_conf.window)]
+                                for i in range(0, len(article['text']), es_conf.stride)
+                            ]
+                        else:
+                            paragraphs = [
+                                x.strip() for x in
+                                article['text'].split("\n")
+                                if len(x.strip())
+                            ]
+                    else:
+                        paragraphs = [article['text']]
 
                     for paragraph in paragraphs:
                         doc = create_doc(article['title'], article['url'],
