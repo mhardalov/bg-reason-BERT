@@ -1,22 +1,25 @@
 from polyglot.text import Text
 import wikipedia
 from itertools import chain
+import time
 
 
 wikipedia.set_lang("bg")
 
-def add_abstracts_to_passages(passages, use_nouns=False, verbose=True):
+def add_abstracts_to_passages(passages, use_nouns=False, verbose=False):
+    abstracts = []
     for passage in passages:
         try:
             abstract = add_wiki_abstracts(passage, use_nouns, verbose)
-            passage += '\n' + abstract
-            print(abstract)
+            abstracts.append(passage + abstract)
+            if abstract:
+                print(len(abstract))
         except ValueError as _:
             print('Another language found')
-    return passages
+    return abstracts
     
 
-def add_wiki_abstracts(passage, use_nouns=False, verbose=True):
+def add_wiki_abstracts(passage, use_nouns=False, verbose=False):
     """Adds to the passage (context) the wiki abstracts
     of the entities recognized in the passage.
 
@@ -57,3 +60,5 @@ def find_wiki_abstract(entity):
     except wikipedia.exceptions.PageError as e:
         # No page for this entity is found
         return ''
+    except ConnectionError:
+        time.sleep(5)
