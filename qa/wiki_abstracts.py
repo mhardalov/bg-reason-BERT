@@ -7,12 +7,12 @@ wikipedia.set_lang("bg")
 
 def add_abstracts_to_passages(passages, use_nouns=False, verbose=True):
     for passage in passages:
-        #try:
-        abstract = add_wiki_abstracts(passage, use_nouns, verbose)
-        passage += '\n' + abstract
-        print(abstract)
-        #except ValueError as _:
-        #    print('Another language found')
+        try:
+            abstract = add_wiki_abstracts(passage, use_nouns, verbose)
+            passage += '\n' + abstract
+            print(abstract)
+        except ValueError as _:
+            print('Another language found')
     return passages
     
 
