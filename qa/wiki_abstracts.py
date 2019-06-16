@@ -9,13 +9,16 @@ wikipedia.set_lang("bg")
 def get_wiki_abstracts(sentences, verbose=False):
     abstracts = []
     for sentence in sentences:
+
         try:
-            abstracts.append(add_wiki_abstracts(sentence, verbose))
-            if abstracts[-1]:
-                print("abstract's length is %d " % len(abstracts[-1]))
-                print(abstracts[-1])
+            abstract = add_wiki_abstracts(sentence, verbose)
+            if verbose and abstract:
+                print("abstract's length is %d " % len(abstract))
+                print(abstract)
         except ValueError as _:
+            abstract = ''
             print('Another language found')
+        abstracts.append(abstract)
     return abstracts
 
 
