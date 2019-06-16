@@ -6,40 +6,40 @@ import time
 
 wikipedia.set_lang("bg")
 
-def add_abstracts_to_passages(passages, use_nouns=False, verbose=False):
+def get_wiki_abstracts(sentences, verbose=False):
     abstracts = []
-    for passage in passages:
+    for sentence in sentences:
         try:
-            abstract = add_wiki_abstracts(passage, use_nouns, verbose)
-            abstracts.append(passage + abstract)
-            if abstract:
-                print(len(abstract))
+            abstracts.append(add_wiki_abstracts(sentence, verbose))
+            if abstracts[-1]:
+                print("abstract's length is %d " % len(abstracts[-1]))
+                print(abstracts[-1])
         except ValueError as _:
             print('Another language found')
     return abstracts
+
+
+def get_entities(sentence):
+    text = Text(sentence, hint_language_code='bg')
+    ners = [[' '.join(entity) for entity in sent.entities] for sent in text.sentences]
+    if [] in ners:
+        ners.remove([])
+    nouns = map(lambda x: x[0], filter(lambda x: x[1] == 'NOUN', text.pos_tags))
     
+    return chain(ners, nouns)
 
-def add_wiki_abstracts(passage, use_nouns=False, verbose=False):
-    """Adds to the passage (context) the wiki abstracts
-    of the entities recognized in the passage.
 
-    passage: this is the context that the was retrieved to be
+def add_wiki_abstracts(sentence, verbose):
+    """Adds to the sentence (context) the wiki abstracts
+    of the entities recognized in the sentence.
+
+    sentence: this is the context that the was retrieved to be
     most relevant for the question + an option.
     """
-    text = Text(passage, hint_language_code='bg')
-    text.language = 'bg'
     wiki_abstracts = []
-    
-    ners = [[' '.join(entity) for entity in sent.entities] for sent in text.sentences]
-    nouns = []
-
-    if use_nouns:
-        nouns = filter(lambda x: x[1] == u'NOUN', text.pos_tags)
-        nouns = map(lambda x: x[0], nouns)
-    
-    for entity in chain(ners, nouns):
+    for entity in get_entities(sentence):
         if entity:
-            #TODO: да се взима основната форма на думите.
+            print("Entity found %s" % entity)
             wiki_abstracts.append(find_wiki_abstract(entity))
     
     abstract = '\n'.join(wiki_abstracts)
@@ -53,7 +53,7 @@ def find_wiki_abstract(entity):
     # TODO: use wikipedia.suggest - wikipedia.suggest returns the suggested
     # Wikipedia title for a query, or None. For some reason, it's always None.
     try:
-        return wikipedia.summary(entity)
+        return wikipedia.summary(entity, chars=200, auto_suggest=True)
     except wikipedia.exceptions.DisambiguationError as e:
         # Sometimes multiple wiki pages are suggested. Adding all of them!
         return '\n'.join(e.options)
@@ -62,3 +62,4 @@ def find_wiki_abstract(entity):
         return ''
     except ConnectionError:
         time.sleep(5)
+        return ''
