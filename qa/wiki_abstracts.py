@@ -56,7 +56,7 @@ def find_wiki_abstract(entity):
     # TODO: use wikipedia.suggest - wikipedia.suggest returns the suggested
     # Wikipedia title for a query, or None. For some reason, it's always None.
     try:
-        return wikipedia.summary(entity, chars=200, auto_suggest=True)
+        return wikipedia.summary(entity, chars=100, auto_suggest=True)
     except wikipedia.exceptions.DisambiguationError as e:
         # Sometimes multiple wiki pages are suggested. Adding all of them!
         return '\n'.join(e.options)

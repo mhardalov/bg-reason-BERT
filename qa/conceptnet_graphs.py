@@ -10,10 +10,13 @@ from polyglot.text import Text
 
 def get_entities(sentence):
     text = Text(sentence, hint_language_code='bg')
-    ners = [[' '.join(entity) for entity in sent.entities] for sent in text.sentences]
-    ners.remove([])
-    nouns = map(lambda x: x[0], filter(lambda x: x[1] == 'NOUN', text.pos_tags))
-    
+    try:
+      ners = [[' '.join(entity) for entity in sent.entities] for sent in text.sentences]
+      if [] in ners:
+        ners.remove([])    
+      nouns = map(lambda x: x[0], filter(lambda x: x[1] == 'NOUN', text.pos_tags))
+    except Exception as _:
+      return []
     return chain(ners, nouns)
 
 
@@ -30,7 +33,7 @@ CONCEPT_NET_URL = 'http://api.conceptnet.io/'
 NODE_URL = 'http://api.conceptnet.io/c/bg/{}?filter=/c/bg&limit=3'
 # Using the English relations because there is more information
 # and then translating them back to Bulgarian.
-RELATED_NODES_URL = 'http://api.conceptnet.io/related/c/bg/{}?filter=/c/en&limit=4'
+RELATED_NODES_URL = 'http://api.conceptnet.io/related/c/bg/{}?filter=/c/en&limit=6'
 # translate_client = translate.Client()
 translator = Translator()
 
@@ -49,8 +52,12 @@ def get_related_entities(entity):
   #  ' '.join(related),
   #  target_language=TARGET_LANGUAGE)['translatedText']
 
-  translated = set(translator.translate(' '.join(related), TARGET_LANGUAGE).text.split(' '))
-  return translated
+  try:
+    translated = set(translator.translate(' '.join(related), TARGET_LANGUAGE).text.split(' '))
+    return translated
+  except Exception as _:
+    print('Could not translate.')
+    return set()
 
 
 def get_synonyms(entity):
