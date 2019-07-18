@@ -1,4 +1,4 @@
-pytorch
+torch>=0.4.1
 pytorch-pretrained-bert
 numpy
 elasticsearch
