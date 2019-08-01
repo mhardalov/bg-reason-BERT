@@ -3,7 +3,7 @@ Experiments in Zero-Shot Multilingual Transfer for Bulgarian
 
 ## Dataset
 
-Our goal is to build a task in a low-resource language, such as Bulgarian, as close as possible to the multiple-choice reading comprehension in a high-resource language such as English.
+Our goal is to build a task in a low-resource language, such as Bulgarian, as close as possible to the multiple-choice reading comprehension in a high-resource language such as English. The dataset can be downloaded from [this link](https://github.com/mhardalov/bg-reason-BERT/blob/master/data/bg_rc-v1.0.json).
 
 | Domain | #QA-paris | #Choices | Len Question | Len Options | Vocab Size |
 |:-------|:---------:|:--------:|:------------:|:-----------:|:----------:|
