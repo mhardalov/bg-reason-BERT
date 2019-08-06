@@ -141,8 +141,18 @@ python fill_elastic.py --wiki_path /PATH/TO/WIKI_EXTRACTOR_DIRS --es_config_file
 
 ### Running the prediction pipeline
 
-
+The code for the prediction pipeline is in the `bg_reason_BERT/WikipediaDocumentMatcher.ipynb` Jupyer notebook.
 
 ## Cite
 
-TBD
+For now, cite [the Arxiv paper](https://arxiv.org/abs/1908.01519):
+
+```
+
+@article{hardalov2019beyond,
+  title={MBeyond {E}nglish-only Reading Comprehension: Experiments in Zero-Shot Multilingual Transfer for {B}ulgarian},
+  author={Hardalov, Momchil and Koychev, Ivan and Nakov, Preslav},
+  journal={arXiv preprint arXiv:1908.01519},
+  year={2019}
+}
+```
