@@ -1,6 +1,11 @@
 # Beyond English-only Reading Comprehension
 Experiments in Zero-Shot Multilingual Transfer for Bulgarian
 
+## Introduction
+Recently, reading comprehension models achieved near-human performance on large-scale datasets such as SQuAD, CoQA, MS Macro, RACE, etc. This is largely due to the release of pre-trained contextualized representations such as BERT and ELMo, which can be fine-tuned for the target task. Despite those advances and the creation of more challenging datasets, most of the work is still done for English. Here, we study the effectiveness of multilingual BERT fine-tuned on large-scale English datasets for reading comprehension (e.g., for RACE), and we apply it to Bulgarian multiple-choice reading comprehension. We propose a new dataset containing 2,221 questions from matriculation exams for twelfth grade in various subjects -history, biology, geography and philosophy-, and 412 additional questions from online quizzes in history. While the quiz authors gave no relevant context, we incorporate knowledge from Wikipedia, retrieving documents matching the combination of question + each answer option.
+
+Our academic paper which describes the approach, the dataset, and the results in detail, can be found here: https://arxiv.org/abs/1908.01519
+
 ## Dataset
 
 Our goal is to build a task in a low-resource language, such as Bulgarian, as close as possible to the multiple-choice reading comprehension in a high-resource language such as English. The dataset can be downloaded from [this link](https://github.com/mhardalov/bg-reason-BERT/blob/master/data/bg_rc-v1.0.json).
@@ -141,14 +146,13 @@ python fill_elastic.py --wiki_path /PATH/TO/WIKI_EXTRACTOR_DIRS --es_config_file
 
 ### Running the prediction pipeline
 
-The code for the prediction pipeline is in the `bg_reason_BERT/WikipediaDocumentMatcher.ipynb` Jupyer notebook.
+The code for the prediction pipeline is available as a Jupyter notebook `bg_reason_BERT/WikipediaDocumentMatcher.ipynb`.
 
 ## Cite
 
-For now, cite [the Arxiv paper](https://arxiv.org/abs/1908.01519):
+The paper will appear at [RANLP 2019](http://lml.bas.bg/ranlp2019/start.php). For now, cite [the Arxiv paper](https://arxiv.org/abs/1908.01519):
 
 ```
-
 @article{hardalov2019beyond,
   title={MBeyond {E}nglish-only Reading Comprehension: Experiments in Zero-Shot Multilingual Transfer for {B}ulgarian},
   author={Hardalov, Momchil and Koychev, Ivan and Nakov, Preslav},
