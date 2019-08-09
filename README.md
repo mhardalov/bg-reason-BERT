@@ -154,7 +154,7 @@ The paper will appear at [RANLP 2019](http://lml.bas.bg/ranlp2019/start.php). Fo
 
 ```
 @article{hardalov2019beyond,
-  title={MBeyond {E}nglish-only Reading Comprehension: Experiments in Zero-Shot Multilingual Transfer for {B}ulgarian},
+  title={Beyond {E}nglish-only Reading Comprehension: Experiments in Zero-Shot Multilingual Transfer for {B}ulgarian},
   author={Hardalov, Momchil and Koychev, Ivan and Nakov, Preslav},
   journal={arXiv preprint arXiv:1908.01519},
   year={2019}
