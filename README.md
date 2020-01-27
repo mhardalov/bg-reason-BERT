@@ -150,13 +150,23 @@ The code for the prediction pipeline is available as a Jupyter notebook `bg_reas
 
 ## Cite
 
-The paper will appear at [RANLP 2019](http://lml.bas.bg/ranlp2019/start.php). For now, cite [the Arxiv paper](https://arxiv.org/abs/1908.01519):
+The paper is presented at [RANLP 2019](http://lml.bas.bg/ranlp2019/start.php).
+Read the paper at: [ACL Anthology](https://www.aclweb.org/anthology/R19-1053/), or [Arxiv](https://arxiv.org/abs/1908.01519):
+
+Please, cite as:
 
 ```
-@article{hardalov2019beyond,
-  title={Beyond {E}nglish-Only Reading Comprehension: Experiments in Zero-Shot Multilingual Transfer for {B}ulgarian},
-  author={Hardalov, Momchil and Koychev, Ivan and Nakov, Preslav},
-  journal={arXiv preprint arXiv:1908.01519},
-  year={2019}
+@inproceedings{hardalov-etal-2019-beyond,
+    title = "Beyond {E}nglish-Only Reading Comprehension: Experiments in Zero-shot Multilingual Transfer for {B}ulgarian",
+    author = "Hardalov, Momchil  and
+      Koychev, Ivan  and
+      Nakov, Preslav",
+    booktitle = "Proceedings of the International Conference on Recent Advances in Natural Language Processing",
+    series = "RANLP'~19",
+    year = "2019",
+    address = "Varna, Bulgaria",
+    url = "https://www.aclweb.org/anthology/R19-1053",
+    doi = "10.26615/978-954-452-056-4_053",
+    pages = "447--459",
 }
 ```
