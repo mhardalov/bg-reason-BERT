@@ -162,7 +162,7 @@ Please, cite as:
       Koychev, Ivan  and
       Nakov, Preslav",
     booktitle = "Proceedings of the International Conference on Recent Advances in Natural Language Processing",
-    series = "RANLP'~19",
+    series = "RANLP~'19",
     year = "2019",
     address = "Varna, Bulgaria",
     url = "https://www.aclweb.org/anthology/R19-1053",
